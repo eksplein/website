@@ -102,3 +102,19 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Cypress runs
+/cypress/screenshots/
+
+# Sapper builds
+/__sapper__/
+
+# Svelte CSS bundle
+/static/bundle.css
+
+# Home-made Excalidraw parser builds
+/static/excalidraw/*.png
+
+# Lock files
+*.lock
+package-lock.json
