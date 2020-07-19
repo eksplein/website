@@ -117,6 +117,7 @@ npm run export
 
 - [DigitalOcean Community tutorials](https://www.digitalocean.com/community/tutorials) — DigitalOcean
 - [whatthefuck.is](https://whatthefuck.is/) — Dan Abramov
+- [Urban Dictionnary](https://www.urbandictionary.com/) — Urban Dictionary LLC
 
 ## License
 
