@@ -118,3 +118,9 @@ dist
 # Lock files
 *.lock
 package-lock.json
+
+# Docma documentation builds
+static/docs
+
+# Sapper node_modules in src/
+src/node_modules

@@ -1,0 +1,19 @@
+{
+    "src": [
+        "src/**/*.js"
+    ],
+    "dest": "static/docs",
+    "app": {
+        "title": "Docma",
+        "favicon": "static/docma.ico",
+        "routing": "path"
+    },
+    "template": {
+        "options": {
+            "title": {
+                "label": "Eksplein",
+                "href": "/"
+            }
+        }
+    }
+}
