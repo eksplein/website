@@ -2,7 +2,7 @@
     "src": [
         "src/**/*.js"
     ],
-    "dest": "static/docs",
+    "dest": "__docs__",
     "app": {
         "title": "Docma",
         "favicon": "static/docma.ico",

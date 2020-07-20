@@ -120,7 +120,7 @@ dist
 package-lock.json
 
 # Docma documentation builds
-static/docs
+__docs__
 
 # Sapper node_modules in src/
 src/node_modules
