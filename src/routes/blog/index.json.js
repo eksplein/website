@@ -1,9 +1,9 @@
 /**
  * @license GPL-3.0
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
- * in which things are explained 
+ * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,22 +18,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import posts from './_posts.js';
+import posts from './_posts'
 
 const contents = JSON.stringify(posts.map(post => {
-  return {
-    title: post.title,
-    slug: post.slug,
-    excerpt: post.excerpt,
-    printDate: post.printDate,
-    lang: post.lang
-  }
+	return {
+		title: post.title,
+		slug: post.slug,
+		excerpt: post.excerpt,
+		printDate: post.printDate,
+		lang: post.lang
+	}
 }))
 
-export function get(req, res) {
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
-  })
+export function get(request, response) {
+	response.writeHead(200, {
+		'Content-Type': 'application/json'
+	})
 
-  res.end(contents)
+	response.end(contents)
 }

@@ -1,0 +1,16 @@
+{
+    "semicolon": false,
+    "rules": {
+        "curly": "off",
+        "unicorn/filename-case": "off"
+    },
+    "overrides": [
+        {
+            "files": [ "src/models/ContentParser.js" ],
+            "rules": {
+                "import/extensions": "off",
+                "import/no-unassigned-import": "off"
+            }
+        }
+    ]
+}

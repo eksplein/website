@@ -1,12 +1,13 @@
 {
     "src": [
-        "src/**/*.js"
+        "src/lib/**/*.js"
     ],
-    "dest": "__docs__",
+    "dest": "__eksplein__/docs",
     "app": {
         "title": "Docma",
         "favicon": "static/docma.ico",
-        "routing": "path"
+        "routing": "path",
+        "base": "/docs/"
     },
     "template": {
         "options": {

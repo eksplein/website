@@ -1,4 +1,4 @@
-/**
+/*
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
  * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
@@ -17,31 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import posts from '../_posts'
+// import fs from 'fs-extra'
+import * as path from 'path'
 
-export function get(request, response, _) {
-	// The `slug` parameter is available because
-	// this file is called [slug].json.js
-	const {lang, slug} = request.params
+const cwd: string = process.cwd()
 
-	const lookup = new Map()
-	posts.forEach(post => {
-		if (post.lang === lang) lookup.set(post.slug, JSON.stringify(post))
-	})
+/**
+ * Emote crawler utility, which takes care of crawling emotes directory (<code>./emotes</code>)
+ * @public
+ * @constant
+ * @class EmoteCrawler
+ * @property {String}  emotesPath
+ * @copyright Tom Bazarnik and the contributors
+ * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
+ */
+export const EmoteCrawler = class EmoteCrawler {
+	public emotesPath: string
+	constructor(pathString = 'emotes/') {
+		this.emotesPath = pathString
+	}
 
-	if (lookup.has(slug)) {
-		response.writeHead(200, {
-			'Content-Type': 'application/json'
-		})
-
-		response.end(lookup.get(slug))
-	} else {
-		response.writeHead(404, {
-			'Content-Type': 'application/json'
-		})
-
-		response.end(JSON.stringify({
-			message: 'Not found'
-		}))
+	setEmotesPath(pathString: string) {
+		this.emotesPath = path.join(cwd, pathString)
 	}
 }

@@ -23,29 +23,71 @@ Install dependencies using your Node package manager.
 npm install
 ```
 
-Now, you should be able to launch a development server, using the following command.
+## Usage
+
+Now, you should be able to launch a dev server, using the following command.
 
 ```bash
 npm run dev
 ```
 
+When starting the dev server, multiple custom scripts are running in background :
+
+- ✅ Compile **TypeScript** models (`/src/models`) and save output in `/src/lib`
+- 🖼️ Generate images from **Excalidraw** files (`/excalidraw/*.excalidraw`) and save output in `/__eksplein__/excalidraw`
+- 🔍 Start watching for **TypeScript** file changes (`/src/models/*.ts`)
+- 🚀 Start the **Sapper** server
+- 📝 Generate **Docma** API documentation from **JSDoc** comments and save output in `/__eksplein__/docs`
+
+When some JavaScript file changes, it will automatically...
+
+- :arrows_counterclockwise: Reload the **Sapper** server
+- :arrows_counterclockwise: Update **Docma** documentation
+
+When some TypeScript file changes, it will automatically...
+
+- :arrows_counterclockwise: ​Re-compile **TypeScript** models
+- :arrows_counterclockwise: Reload the **Sapper** server
+- :arrows_counterclockwise: Update **Docma** documentation
+
+## API
+
+Eksplein is using **Docma** as an API documentation generator, which uses **JSDoc** comments in source files. This can be accessed via `http://localhost:4000/docs/`. This allows maintainers and contributors to properly understand _what are_ / _how to use_ available classes and methods.
+
+![Docma demo](https://camo.githubusercontent.com/4f42d19f0a7bd6799e81db69e507d4c1bd639313/68747470733a2f2f7261772e6769746875622e636f6d2f6f6e7572792f646f636d612f6d61737465722f646f636d612d73637265656e2e676966)
+
+This is automatically generated / updated :
+
+- 🚀 When **starting** the dev server, using `npm run dev`
+- 💾 When some source file is **changed** while dev server is live
+- 📦 When **exporting**, using `npm run export`
+
+A few caveats :
+
+- You need to **manually refresh** the Docma page to notice new changes
+- `/docs` route won't work, while `/docs/` does
+
 ## Structure
 
 ```bash
 .
+├─── __eksplein__              # Eksplein computed assets
 ├─── __sapper__                # Sapper builds
-├─── __docs__                  # Docma builds
 ├─── cypress                   # Cypress specs and plugins
 ├─── excalidraw                # Excalidraw JSON files
 ├─── posts                     # Markdown-based content
 ├─── src                       # Source files
-│   ├─── components            # Svelte components
+│   ├─── components            # Svelte UI components
+│   ├─── models                # TypeScript-based models
 │   ├─── routes                # Sapper routes
 │   ├─── client.js             # Main Sapper entrypoint
+│   ├─── hmr.js                # Hot Module Replacement custom scripts
 │   ├─── server.js             # Sapper dev server
 │   ├─── service-worker.js     # Service worker
 │   └─── template.html         # Main HTML template entry
 ├─── static                    # Production-ready static assets
+├─── .tsconfig.json            # Custom TypeScript configuration file
+├─── .xo.config.json           # XO linter configuration file
 ├─── cypress.json              # Cypress configuration file
 ├─── docma.json                # Docma configuration file
 ├─── package.json              # Manifest file and scripts
@@ -69,19 +111,9 @@ src/routes
 └─── index.svelte                # http://localhost:4000
 ```
 
-## API
-
-Use the following command to generate **Docma**-based API documentation, using **JSDoc** comments in JavaScript files and the `docma.json` configuration file. 
-
-```bash
-npm run docma
-```
-
-The output is stored inside `__docs__` folder and should now be accessed via your browser at `http://localhost:9000/`.
-
 ## Testing
 
-Launch Cypress tests using the following command :
+Launch **Cypress** tests using the following command :
 
 ```bash
 npm run test
@@ -97,11 +129,36 @@ Bundling for production use is done via the following command :
 npm run export
 ```
 
-This script is taking care of several tasks :
+This script is taking care of the following stuff :
 
-- **License check** — Also doable via `npm run license-compliance`, this basically checks if the production build will only bundle dependencies which are compatible with Eksplein' [**GPLv3 License**](https://github.com/eksplein/website/master/LICENSE). ![License: MIT](https://img.shields.io/badge/License-GPLv3-blue.svg)
-- **Generate Excalidraw images** — This generates PNG images from Excalidraw JSON schemas (`*.excalidraw`) and output in `static/excalidraw`, using `@tommywalkie/excalidraw-cli`. This is also done when starting the dev server.
-- **Export the client** — If everything worked, Sapper now takes care of bundling and exporting the client in `__sapper__/export`. 
+- ✅ Compiling **TypeScript** source files
+- ⚖️ Checking for **licenses**, this will tell us if a direct dependency is not compatible with Eksplein's license ![License: MIT](https://img.shields.io/badge/License-GPLv3-blue.svg) <sup>[1]</sup>
+- 🖼️ Compute **Excalidraw** files and generate images
+- 📦 Telling Sapper to **bundle** the client for production in `/__sapper__/export`
+- 📝 Generating **Docma** docs 
+- 📦 Move `/__eksplein__/` content into the production bundle
+
+<sup>[1] - This is notably the case with AGPLv1 and BSD-4-Clause licenses, the whole list can be found <a href="https://www.gnu.org/licenses/license-list.en.html#GPLIncompatibleLicenses">here</a>. </sup>
+
+## FAQ
+
+##### What is the purpose of `__eksplein__` folder ?
+
+Similar to what Sapper does with `__sapper__`, this is the repository for computed assets like **Excalidraw** previews, **Docma** documentation and _to-be-optimized_ assets will be stored, for now.
+
+##### How is TypeScript supported ?
+
+Typescript is supported in Svelte via `svelte-preprocess` so it can be used in templates (`<script lang="ts">`), while Sapper doesn't support it _yet_ ([sapper#760](https://github.com/sveltejs/sapper/issues/760)). 
+
+This is partially supported in Eksplein website project using an _unconventional_ TypeScript configuration file `.tsconfig.json` which tells the compiler to only care about the `/src/models` folder and save outputs in `/src/lib/` when it comes to core models and methods.
+
+When Sapper will support TypeScript, we won't need to use some _hacks_ like the following one..
+
+##### Why `.tsconfig.json`, instead of `tsconfig.json` ?
+
+`svelte-preprocess` seems to have a custom default TypeScript configuration which runs fine for templates, but runs into errors if we intend to use our actual one. Naming it differently allows `svelte-preprocess` to avoid configuration conflicts, while our `.tsconfig.json` can be safely used for models. 
+
+
 
 
 

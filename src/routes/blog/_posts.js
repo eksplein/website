@@ -1,8 +1,8 @@
 /**
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
- * in which things are explained 
+ * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,17 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ContentCrawler } from '../../models/ContentCrawler'
+import {ContentCrawler} from '../../lib/ContentCrawler'
 
-let posts = []
+const posts = []
 const crawler = new ContentCrawler('posts/')
 const directories = crawler.getDirectories()
 
 directories.forEach(dir => {
-    const langPosts = crawler.postsFromDirectory(dir)
-    langPosts.forEach(post => {
-        posts.push(post)
-    })
+	const langPosts = crawler.postsFromDirectory(dir)
+	langPosts.forEach(post => {
+		posts.push(post)
+	})
 })
 
 export default posts

@@ -5,16 +5,24 @@
   "author": "Tom Bazarnik <tommywalkie@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "dev": "npm run excalidraw && sapper dev --port 4000",
+    "dev": "npm run tsc && run-p excalidraw copy-emotes watch-ts start-dev-server",
+    "start-dev-server": "sapper dev --port 4000",
     "build": "npm run excalidraw && sapper build",
-    "export": "npm run license-compliance && npm run excalidraw && sapper export",
+    "export": "run-p tsc license-compliance excalidraw && sapper export && npm run export-assets",
+    "export-assets": "docma && cpy ./**/* ../__sapper__/export/ --cwd=__eksplein__ --parents",
+    "copy-emotes": "cpy ./**/* ../__eksplein__/emotes --cwd=emotes --parents -s",
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
-    "excalidraw": "excalidraw-cli excalidraw ./static/excalidraw",
+    "excalidraw": "excalidraw-cli excalidraw ./__eksplein__/excalidraw -q",
     "license-compliance": "license-compliance --production --allow \"MIT;WTFPL;ISC;Apache-2.0;0BSD;BSD-3-Clause;BSD-2-Clause;GPL-2.0;GPL-2.0+;GPL-3.0;LGPL-2.0;LGPL-3.0;LGPL-3.0+;MPL-2.0\"",
-    "docma": "docma && docma serve"
+    "docma": "docma && docma serve",
+    "docma:build-only": "docma",
+    "tsc": "tsc -p .tsconfig.json",
+    "watch-ts": "chokidar --silent \"src/models/*.ts\" -c \"npm run tsc\"",
+    "lint": "xo src/**/* rollup.config.js",
+    "xo": "xo !node_modules !src/node_modules !__sapper__ !__eksplein__ ./src/**/*.js --fix"
   },
   "dependencies": {
     "compression": "^1.7.1",
@@ -36,9 +44,13 @@
     "@babel/runtime": "^7.10.3",
     "@rollup/plugin-babel": "^5.0.3",
     "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^8.0.1",
     "@rollup/plugin-replace": "^2.3.3",
     "@tommywalkie/excalidraw-cli": "^0.5.0",
+    "@types/marked": "^1.1.0",
+    "chokidar-cli": "^2.1.0",
+    "cpy-cli": "^3.1.1",
     "cypress": "^4.7.0",
     "cypress-jest-adapter": "^0.1.1",
     "docma": "^3.2.2",
@@ -51,6 +63,10 @@
     "rollup-plugin-svg-import": "^1.5.1",
     "rollup-plugin-terser": "^4.0.4",
     "sapper": "^0.27.13",
-    "svelte": "^3.0.0"
+    "sass": "^1.26.10",
+    "svelte": "^3.24.0",
+    "svelte-preprocess": "^4.0.8",
+    "typescript": "^3.9.7",
+    "xo": "^0.32.1"
   }
 }

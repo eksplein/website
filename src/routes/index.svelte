@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<style>
+<style lang="scss">
   .home-container {
     align-items: center;
     display: flex;
@@ -29,10 +29,10 @@
 
   .home-copy {
     flex: 1;
-  }
 
-  .home-copy h1 {
-    text-align: center;
+    h1 {
+        text-align: center;
+    }
   }
 
   h1 {
@@ -82,12 +82,17 @@
   }
 </style>
 
+<script lang="ts">
+    // Just testing TypeScript..
+    export let name: string = 'Eksplein.me'
+</script>
+
 <svelte:head>
   <title>Eksplein.me</title>
 </svelte:head>
 
 <div class="home-container">
   <div class="home-copy">
-    <h1>Welcome to Eksplein.me</h1>
+    <h1>Welcome to {name}</h1>
   </div>
 </div>

@@ -1,8 +1,8 @@
 /**
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
- * in which things are explained 
+ * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,10 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* eslint-env browser */
+
 import * as sapper from '@sapper/app'
 
 sapper.start({
-  target: document.querySelector('#sapper')
+	target: document.querySelector('#sapper')
 }).then(() => {
-  console.log('client-side app has started')
+	console.log('client-side app has started')
 })
