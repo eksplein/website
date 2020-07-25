@@ -1,8 +1,8 @@
 /*
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
- * in which things are explained 
+ * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import prism from 'prismjs'
-import marked from 'marked'
+import * as prism from 'prismjs'
+import * as marked from 'marked'
 
 // Independant Prism components
 import 'prismjs/components/prism-gdscript.min'
@@ -69,94 +69,95 @@ import 'prismjs/components/prism-javadoclike.min'
 // Import Svelte Prism language extension community project
 import 'prism-svelte'
 
-/** 
+/**
  * Default Marked Renderer, which already takes care of parsing code blocks with Prism and emotes as <code>img</code> tags
- * @constant DefaultRenderer
+ * @constant DEFAULT_RENDERER
  * @type {Renderer}
 */
-const DefaultRenderer = new marked.Renderer()
-const linkRenderer = DefaultRenderer.link
+const DEFAULT_RENDERER: marked.Renderer = new marked.Renderer()
+const linkRenderer = DEFAULT_RENDERER.link
 
-DefaultRenderer.link = (href, title, text) => {
-    const html = linkRenderer.call(renderer, href, title, text)
+DEFAULT_RENDERER.link = (href, title, text) => {
+	const html = linkRenderer.call(DEFAULT_RENDERER, href, title, text)
 
-    if (href.indexOf('/') === 0) {
-      // Do not open internal links on new tab
-      return html
-    } else if (href.indexOf('#') === 0) {
-      // Handle hash links to internal elements
-      const html = linkRenderer.call(renderer, 'javascript:;', title, text)
-      return html.replace(/^<a /, `<a onclick="document.location.hash='${href.substr(1)}';" `)
-    }
+	if (href.indexOf('/') === 0) {
+		// Do not open internal links on new tab
+		return html
+	}
 
-    return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
+	if (href.indexOf('#') === 0) {
+		// Handle hash links to internal elements
+		/* eslint-disable-next-line no-script-url */
+		const html = linkRenderer.call(DEFAULT_RENDERER, 'javascript:;', title, text)
+		return html.replace(/^<a /, `<a onclick="document.location.hash='${href.slice(1)}';" `)
+	}
+
+	return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
 }
 
-DefaultRenderer.code = (code, language) => {
-  const parser = prism.languages[language] || prism.languages.html
-  const highlighted = prism.highlight(code, parser, language)
-  return `<pre class="language-${language}"><code class="language-${language}">${highlighted}</code></pre>`
+DEFAULT_RENDERER.code = (code, language) => {
+	const parser = prism.languages[language] || prism.languages.html
+	const highlighted = prism.highlight(code, parser, language)
+	return `<pre class="language-${language}"><code class="language-${language}">${highlighted}</code></pre>`
 }
 
-DefaultRenderer.paragraph = text => {
-    const parsed = text.replace(/<code>\:[a-zA-Z0-9_]*?\:<\/code>{1}/g, (match, _) => {
-        return `${match.replace(/:/g, '$x$')}`
-    }).replace(/\:[a-zA-Z0-9_]*?\:/g, (match, _) => {
-        return `<img emote src="emotes/${match.replace(/:/g, '')}.gif" />`
-    }).replace(/\$x\$/g, ':')
-    return `<p>` + parsed + `</p>`
+DEFAULT_RENDERER.paragraph = text => {
+	const parsed = text.replace(/<code>:\w*?:<\/code>/g, (match, _) => {
+		return `${match.replace(/:/g, '$x$')}`
+	}).replace(/:\w*?:/g, (match, _) => {
+		return `<img class="emote" emote src="emotes/${match.replace(/:/g, '')}.gif" />`
+	}).replace(/\$x\$/g, ':')
+	return '<p>' + parsed + '</p>'
 }
-
 
 /**
  * Content parser utility, which takes care of parsing Markdown as HTML, using a customizable Marked renderer.
  * @public
  * @constant
  * @class ContentParser
- * @property {Renderer}  customRenderer
+ * @property {marked.Renderer}  customRenderer
  * @copyright Tom Bazarnik and the contributors
- * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a> 
+ * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
-export const ContentParser = class ContentParser {
-    /**
+export class ContentParser {
+	renderer: marked.Renderer
+	/**
      * Creates an instance of ContentParser.
-     * @param {Renderer} [renderer=DefaultRenderer] - Marked renderer object that will parse the content. Defaults to DefaultRenderer constant if none provided.
+     * @param {marked.Renderer} [renderer=DEFAULT_RENDERER] - Marked renderer object that will parse the content. Defaults to DEFAULT_RENDERER constant if none provided.
      * @constructor
-     * @return {ContentParser} The content parser.
      */
-    constructor(renderer) {
-        this.renderer = DefaultRenderer
-        if (renderer) 
-            this.renderer = renderer
-    }
+	constructor(renderer?: marked.Renderer) {
+		this.renderer = DEFAULT_RENDERER
+		if (renderer)
+			this.renderer = renderer
+	}
 
-    /**
-     * Set the Marked renderer for the content parser
-     * @method
-     * @param {Renderer} customRenderer - Marked renderer 
-     * @type {Renderer}
-     */
-    set renderer(customRenderer) {
-        this._renderer = customRenderer
-    }
-
-    /**
+	/**
      * Helper method that generates a blank Marked renderer
      * @method
-     * @return {Renderer}
+     * @return {marked.Renderer}
      */
-    generateMarkedRenderer() {
-        return new marked.Renderer()
-    }
+	generateMarkedRenderer(): marked.Renderer {
+		return new marked.Renderer()
+	}
 
-    /**
+	/**
+     * Helper method that generates a new Marked renderer, based on the <code>DEFAULT_RENDERER</code> one.
+     * @method
+     * @return {DEFAULT_RENDERER}
+     */
+	generateDefaultRenderer() {
+		return Object.assign({}, DEFAULT_RENDERER)
+	}
+
+	/**
      * Parse the content with the ContentParser object renderer
      * @method
-     * @param {String} content - the original Markdown content
-     * @return {String}
+     * @param {string} content - the original Markdown content
+     * @return {string}
      */
-    parse(content) {
-        marked.setOptions({ renderer: this._renderer })
-        return marked(content)
-    }
+	parse(content) {
+		marked.setOptions({renderer: this.renderer})
+		return marked(content)
+	}
 }
