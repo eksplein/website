@@ -9,7 +9,7 @@
     "start-dev-server": "sapper dev --port 4000",
     "build": "npm run excalidraw && sapper build",
     "export": "run-p tsc license-compliance excalidraw docma:build-only && sapper export && npm run export-assets",
-    "export-assets": "cpy ./__eksplein__/**/* ./__sapper__/export/ --parents",
+    "export-assets": "cpy ./__eksplein__/docs ./__sapper__/export/docs && cpy ./__eksplein__/emotes ./__sapper__/export/emotes && cpy ./__eksplein__/excalidraw ./__sapper__/export/excalidraw",
     "copy-emotes": "cpy ./**/* ../__eksplein__/emotes --cwd=emotes --parents -s",
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
