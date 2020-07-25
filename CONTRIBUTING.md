@@ -60,7 +60,6 @@ This is automatically generated / updated :
 
 - 🚀 When **starting** the dev server, using `npm run dev`
 - 💾 When some source file is **changed** while dev server is live
-- 📦 When **exporting**, using `npm run export`
 
 A few caveats :
 
@@ -135,7 +134,6 @@ This script is taking care of the following stuff :
 - ⚖️ Checking for **licenses**, this will tell us if a direct dependency is not compatible with Eksplein's license ![License: MIT](https://img.shields.io/badge/License-GPLv3-blue.svg) <sup>[1]</sup>
 - 🖼️ Compute **Excalidraw** files and generate images
 - 📦 Telling Sapper to **bundle** the client for production in `/__sapper__/export`
-- 📝 Generating **Docma** docs 
 - 📦 Move `/__eksplein__/` content into the production bundle
 
 <sup>[1] - This is notably the case with AGPLv1 and BSD-4-Clause licenses, the whole list can be found <a href="https://www.gnu.org/licenses/license-list.en.html#GPLIncompatibleLicenses">here</a>. </sup>
