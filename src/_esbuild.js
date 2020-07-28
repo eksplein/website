@@ -1,4 +1,4 @@
-/*
+/**
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
  * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
@@ -17,27 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import fs from 'fs-extra'
-import * as path from 'path'
+const { build } = require('esbuild')
+const rimraf = require('rimraf')
 
-const cwd: string = process.cwd()
+const { getAllTypeScriptFilesFrom } = require('./_common')
 
-/**
- * Emote crawler utility, which takes care of crawling emotes directory (<code>./emotes</code>)
- * @public
- * @constant
- * @class EmoteCrawler
- * @property {string}  emotesPath
- * @copyright Tom Bazarnik and the contributors
- * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
- */
-export const EmoteCrawler = class EmoteCrawler {
-	public emotesPath: string
-	constructor(pathString = 'emotes/') {
-		this.emotesPath = pathString
-	}
+const fs = require('fs')
 
-	setEmotesPath(pathString: string) {
-		this.emotesPath = path.join(cwd, pathString)
-	}
+const useEsbuild = async () => {
+    const typeScriptFiles = await getAllTypeScriptFilesFrom('src/models')
+
+    await rimraf('src/models/**/*.js', fs, (err) => {
+        if (err)
+            console.log(err)
+        else {
+            typeScriptFiles.forEach(el => {
+                build({
+                    entryPoints: [`${el}`],
+                    outfile: `${el.replace(/.ts$/g, '.js')}`,
+                    minify: true,
+                    sourcemap: true
+                }).catch(() => process.exit(1))
+            })
+        }
+    })
 }
+
+useEsbuild()

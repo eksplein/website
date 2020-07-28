@@ -29,17 +29,19 @@ export class Emote {
 	/**
      * Creates an instance of Emote
      * @param {Object} emoteObject - The emote object
-     * @param {String} emoteObject.slug - Emote slug <code>myEmote</code> which then will be available as => <code>:myEmote:</code>
-     * @param {String} emoteObject.imageUrl - Emote image url
-     * @param {String} [emoteObject.title=emoteObject.slug] - Custom emote title string, defaults internally to <code>emoteObject.slug</code>
-     * @param {String} [emoteObject.category="general"] - Primary tag for the emote
+     * @param {string} emoteObject.slug - Emote slug <code>myEmote</code> which then will be available as => <code>:myEmote:</code>
+     * @param {string} emoteObject.imageUrl - Emote image url
+     * @param {string} [emoteObject.title=emoteObject.slug] - Custom emote title string, defaults internally to <code>emoteObject.slug</code>
+     * @param {string} [emoteObject.category="general"] - Primary tag for the emote
      * @param {Array.<String>} [emoteObject.tags=[]] - Additional tags for easier emote searching
-     * @param {String} [emoteObject.description=""] - Emote description
-     * @param {String} [emoteObject.copyright="Tom Bazarnik and the contributors"] - Copyright notice
-     * @param {String} [emoteObject.licence="MIT"] - Licence
+     * @param {string} [emoteObject.description=""] - Emote description
+     * @param {string} [emoteObject.copyright="Tom Bazarnik and the contributors"] - Copyright notice
+     * @param {string} [emoteObject.licence="MIT"] - Licence
      * @constructor
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	constructor(emoteObject: Record<string, unknown>) {
+	constructor(emoteObject: Record<string, any>) {
 		for (const [key, value] of Object.entries(emoteObject))
 			this[key] = value
 	}

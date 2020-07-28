@@ -21,6 +21,8 @@
  * Enum for <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO_639-1</a> language codes.
  * @readonly
  * @enum {string}
+ * @copyright Tom Bazarnik and the contributors
+ * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
 export enum ISO_639_1 {
 	/** French <img src="https://img.icons8.com/color/24/000000/france-circular.png" style="vertical-align: top;"/> */
@@ -63,6 +65,8 @@ export class TranslationEntry {
      * @param {ISO_639_1} language - <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO_639-1</a> Language code
      * @param {string} entry - Translated label
      * @constructor
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	constructor(language: ISO_639_1, entry: string) {
 		this.language = language

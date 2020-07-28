@@ -73,8 +73,10 @@ import 'prism-svelte'
  * Default Marked Renderer, which already takes care of parsing code blocks with Prism and emotes as <code>img</code> tags
  * @constant DEFAULT_RENDERER
  * @type {Renderer}
+ * @copyright Tom Bazarnik and the contributors
+ * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
 */
-const DEFAULT_RENDERER: marked.Renderer = new marked.Renderer()
+const DEFAULT_RENDERER: marked.Renderer = new marked.Renderer({})
 const linkRenderer = DEFAULT_RENDERER.link
 
 DEFAULT_RENDERER.link = (href, title, text) => {
@@ -125,6 +127,8 @@ export class ContentParser {
      * Creates an instance of ContentParser.
      * @param {marked.Renderer} [renderer=DEFAULT_RENDERER] - Marked renderer object that will parse the content. Defaults to DEFAULT_RENDERER constant if none provided.
      * @constructor
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	constructor(renderer?: marked.Renderer) {
 		this.renderer = DEFAULT_RENDERER
@@ -136,15 +140,19 @@ export class ContentParser {
      * Helper method that generates a blank Marked renderer
      * @method
      * @return {marked.Renderer}
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	generateMarkedRenderer(): marked.Renderer {
-		return new marked.Renderer()
+		return new marked.Renderer({})
 	}
 
 	/**
      * Helper method that generates a new Marked renderer, based on the <code>DEFAULT_RENDERER</code> one.
      * @method
      * @return {DEFAULT_RENDERER}
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	generateDefaultRenderer() {
 		return Object.assign({}, DEFAULT_RENDERER)
@@ -155,6 +163,8 @@ export class ContentParser {
      * @method
      * @param {string} content - the original Markdown content
      * @return {string}
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	parse(content) {
 		marked.setOptions({renderer: this.renderer})

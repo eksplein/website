@@ -21,18 +21,24 @@ import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
-import babel from '@rollup/plugin-babel'
-import {terser} from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup'
 import marked from 'marked'
 import svg from 'rollup-plugin-svg-import'
 import pkg from './package.json'
-import json from '@rollup/plugin-json'
+import esbuild from 'rollup-plugin-esbuild'
 import sveltePreprocess from 'svelte-preprocess'
 
 const preprocess = sveltePreprocess({
 	typescript: true,
 	scss: true
+})
+
+const optimizer = () => esbuild({
+    minify: !dev,
+    target: "es2017",
+    loaders: {
+        '.json': 'json'
+    }
 })
 
 const mode = process.env.NODE_ENV
@@ -65,7 +71,6 @@ const client = {
 			'process.browser': true,
 			'process.env.NODE_ENV': JSON.stringify(mode)
 		}),
-		json(),
 		svg({stringify: true}),
 		svelte({
 			dev,
@@ -75,26 +80,7 @@ const client = {
 		}),
 		resolve(),
 		commonjs(),
-		babel({
-			extensions: ['.js', '.mjs', '.html', '.svelte', '.json'],
-			babelHelpers: 'runtime',
-			exclude: ['node_modules/@babel/**'],
-			presets: [
-				['@babel/preset-env', {
-					targets: '> 0.25%, not dead'
-				}]
-			],
-			plugins: [
-				'@babel/plugin-syntax-dynamic-import',
-				['@babel/plugin-transform-runtime', {
-					useESModules: true
-				}]
-			]
-		}),
-
-		!dev && terser({
-			module: true
-		})
+		!dev && optimizer()
 	],
 	preserveEntrySignatures: false,
 	onwarn
@@ -108,7 +94,6 @@ const server = {
 			'process.browser': false,
 			'process.env.NODE_ENV': JSON.stringify(mode)
 		}),
-		json(),
 		svg({stringify: true}),
 		svelte({
 			preprocess,
@@ -117,12 +102,11 @@ const server = {
 		}),
 		resolve(),
 		commonjs(),
-		markdown()
+		markdown(),
 	],
 	external: Object.keys(pkg.dependencies).concat(
 		require('module').builtinModules || Object.keys(process.binding('natives'))
 	),
-
 	onwarn
 }
 
@@ -136,7 +120,7 @@ const serviceworker = {
 			'process.env.NODE_ENV': JSON.stringify(mode)
 		}),
 		commonjs(),
-		!dev && terser()
+		!dev && optimizer()
 	],
 	onwarn
 }
