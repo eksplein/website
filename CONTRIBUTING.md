@@ -33,7 +33,7 @@ npm run dev
 
 When starting the dev server, multiple custom scripts are running in background :
 
-- ✅ Compile **TypeScript** models (`/src/models`) and save output in `/src/lib`
+- ✅ Compile **TypeScript** models (`/src/models`) via **ESbuild**
 - 🖼️ Generate images from **Excalidraw** files (`/excalidraw/*.excalidraw`) and save output in `/__eksplein__/excalidraw`
 - 🔍 Start watching for **TypeScript** file changes (`/src/models/*.ts`)
 - 🚀 Start the **Sapper** server
@@ -52,7 +52,7 @@ When some TypeScript file changes, it will automatically...
 
 ## API
 
-Eksplein is using **Docma** as an API documentation generator, which uses **JSDoc** comments in source files. This can be accessed via `http://localhost:4000/docs/`. This allows maintainers and contributors to properly understand _what are_ / _how to use_ available classes and methods.
+Eksplein is temporarily using **Docma** as an API documentation generator, which uses **JSDoc** comments in JavaScript source files. This can be accessed via `http://localhost:4000/docs/`. This allows maintainers and contributors to properly understand _what are and how to use_ available classes and methods.
 
 ![Docma demo](https://camo.githubusercontent.com/4f42d19f0a7bd6799e81db69e507d4c1bd639313/68747470733a2f2f7261772e6769746875622e636f6d2f6f6e7572792f646f636d612f6d61737465722f646f636d612d73637265656e2e676966)
 
@@ -79,13 +79,12 @@ A few caveats :
 │   ├─── components            # Svelte UI components
 │   ├─── models                # TypeScript-based models
 │   ├─── routes                # Sapper routes
-│   ├─── client.js             # Main Sapper entrypoint
-│   ├─── hmr.js                # Hot Module Replacement custom scripts
-│   ├─── server.js             # Sapper dev server
+│   ├─── _esbuild.js           # On-start ESbuild task
+│   ├─── client.js             # Sapper client
+│   ├─── server.js             # Sapper server and file watchers
 │   ├─── service-worker.js     # Service worker
 │   └─── template.html         # Main HTML template entry
 ├─── static                    # Production-ready static assets
-├─── .tsconfig.json            # Custom TypeScript configuration file
 ├─── .xo.config.json           # XO linter configuration file
 ├─── cypress.json              # Cypress configuration file
 ├─── docma.json                # Docma configuration file
@@ -130,7 +129,7 @@ npm run export
 
 This script is taking care of the following stuff :
 
-- ✅ Compiling **TypeScript** source files
+- ✅ Compiling **TypeScript** source files via **ESbuild**
 - ⚖️ Checking for **licenses**, this will tell us if a direct dependency is not compatible with Eksplein's license ![License: MIT](https://img.shields.io/badge/License-GPLv3-blue.svg) <sup>[1]</sup>
 - 🖼️ Compute **Excalidraw** files and generate images
 - 📦 Telling Sapper to **bundle** the client for production in `/__sapper__/export`
@@ -146,15 +145,17 @@ Similar to what Sapper does with `__sapper__`, this is the repository for comput
 
 ##### How is TypeScript supported ?
 
-Typescript is supported in Svelte via `svelte-preprocess` so it can be used in templates (`<script lang="ts">`), while Sapper doesn't support it _yet_ ([sapper#760](https://github.com/sveltejs/sapper/issues/760)). 
+Typescript is supported in Svelte templates via `svelte-preprocess` so it can be used like this :
 
-This is partially supported in Eksplein website project using an _unconventional_ TypeScript configuration file `.tsconfig.json` which tells the compiler to only care about the `/src/models` folder and save outputs in `/src/lib/` when it comes to core models and methods.
+```html
+<script lang="ts">
+    export let hello: string = 'world'
+</script>
+```
 
-When Sapper will support TypeScript, we won't need to use some _hacks_ like the following one..
+Sapper doesn't support TypeScript _yet_ ([sapper#760](https://github.com/sveltejs/sapper/issues/760)), but the Eksplein website project has sort of experimental support, via **ESbuild**, which is a very fast Go-based JavaScript/TypeScript bundler and minifier.
 
-##### Why `.tsconfig.json`, instead of `tsconfig.json` ?
-
-`svelte-preprocess` seems to have a custom default TypeScript configuration which runs fine for templates, but runs into errors if we intend to use our actual one. Naming it differently allows `svelte-preprocess` to avoid configuration conflicts, while our `.tsconfig.json` can be safely used for models. 
+With the current settings, Only the `*.ts` files in the `/src/models` folder will be handled by ESbuild. Outputs and sourcemaps will be saved inside of the mentioned folder.
 
 
 

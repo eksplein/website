@@ -1,6 +1,6 @@
 {
     "src": [
-        "src/lib/**/*.js"
+        "src/models/**/*.js"
     ],
     "dest": "__eksplein__/docs",
     "app": {

@@ -22,6 +22,7 @@ import * as path from 'path'
 import * as matter from 'gray-matter'
 
 import {ContentPost} from './ContentPost'
+import {ISO_639_1} from './TranslationEntry'
 
 const cwd: string = process.cwd()
 
@@ -47,8 +48,10 @@ export class ContentCrawler {
      *   this.contentPath = path.join(process.cwd(), pathString)
      * }
      * ```
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	constructor(pathString = 'posts/') {
+	constructor(pathString: string = 'posts/') {
 		/**
          * To-be-crawled content directory path
          * @type {string}
@@ -61,6 +64,8 @@ export class ContentCrawler {
      * Set the content directory path from Path object.
      * @method
      * @param {string} pathString - To-be-crawled content directory path string
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	setContentPath(pathString: string) {
 		this.contentPath = path.join(cwd, pathString)
@@ -77,6 +82,8 @@ export class ContentCrawler {
      * //  └─── C.md
      * const crawler = new ContentCrawler('posts/')
      * console.log(crawler.getDirectories()) // ["A", "B"]
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	getDirectories(): string[] {
 		return fs.readdirSync(this.contentPath).filter(entry => {
@@ -103,8 +110,10 @@ export class ContentCrawler {
      * //  └─── E
      * const crawler = new ContentCrawler('posts/')
      * console.log(crawler.markdownPostsFromDirectory('A')) // ["C.md", "D.md"]
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	markdownPostsFromDirectory(directory): string[] {
+	markdownPostsFromDirectory(directory: string): string[] {
 		return fs.readdirSync(this.contentPath + directory)
 			.filter(fileName => fileName.endsWith('.md'))
 	}
@@ -112,8 +121,10 @@ export class ContentCrawler {
 	/**
      * Get posts and frontmatter data from content subfolder.
      * @method
-     * @param {string} directory - Subfolder name
+     * @param {ISO_639_1} directory - Subfolder name
      * @return {Array.<ContentPost>} Posts inside the given subfolder
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      * @example
      * // posts/
      * //  ├─── A
@@ -124,7 +135,7 @@ export class ContentCrawler {
      * const crawler = new ContentCrawler('posts/')
      * console.log(crawler.postsFromDirectory('A')) // ["C.md", "D.md"]
      */
-	postsFromDirectory(directory): ContentPost[] {
+	postsFromDirectory(directory: ISO_639_1): ContentPost[] {
 		const posts = this.markdownPostsFromDirectory(directory).map(fileName => {
 			const fileMd = fs.readFileSync(path.join(this.contentPath + directory, fileName), 'utf8')
 			const {data, content} = matter(fileMd)

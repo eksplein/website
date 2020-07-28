@@ -29,7 +29,7 @@ import {ISO_639_1} from './TranslationEntry'
  * @type {string}
  * @default <!-- more -->
 */
-const EXCERPT_SEPARATOR = '<!-- more -->'
+const EXCERPT_SEPARATOR: string = '<!-- more -->'
 
 /**
  * General-purpose content post utility,
@@ -52,11 +52,13 @@ export class ContentPost {
 	/**
      * Creates an instance of ContentPost
      * @param {Object} postObject - The content post object
-     * @param {String} postObject.title - Content post title
-     * @param {String} postObject.slug - Content post sluggified title
-     * @param {String} [postObject.content='Lorem ipsum dolor[...]'] - The actual post content
-     * @param {String} [postObject.date=new Date().toDateString()] - Content post publish date as String
+     * @param {string} postObject.title - Content post title
+     * @param {string} postObject.slug - Content post sluggified title
+     * @param {string} [postObject.content='Lorem ipsum dolor[...]'] - The actual post content
+     * @param {string} [postObject.date=new Date().toDateString()] - Content post publish date as String
      * @constructor
+     * @copyright Tom Bazarnik and the contributors
+     * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	constructor(postObject: ContentPost) {
 		this.html = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at eleifend risus. Vestibulum porta elit ipsum, nec congue erat lacinia nec. Proin sagittis orci id mattis mollis. Donec sollicitudin turpis sit amet condimentum lacinia. Proin volutpat, ligula nec ornare facilisis, libero ex porttitor odio, non luctus urna augue nec turpis. Donec erat tellus, suscipit quis mi eu, scelerisque faucibus mi. In hac habitasse platea dictumst. Cras elementum accumsan urna in semper. Suspendisse accumsan aliquet nisl tincidunt vehicula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut convallis dolor at orci iaculis cursus. Nam ut facilisis enim. Vestibulum non euismod elit. Vivamus molestie congue sem, a aliquam justo ornare id.</p>
@@ -71,12 +73,16 @@ export class ContentPost {
          * Human-readable content post publish date, parsed via <code>date-fns</code>
          * @type {string}
          * @public
+         * @copyright Tom Bazarnik and the contributors
+         * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
          */
 		this.printDate = format(new Date(this.date), 'MMMM D, YYYY')
 		/**
          * Estimated content reading time <code>reading-time</code>
          * @type {string}
          * @public
+         * @copyright Tom Bazarnik and the contributors
+         * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
          */
 		this.printReadingTime = readingTime(this.content).text
 
@@ -93,8 +99,10 @@ export class ContentPost {
 
 		/**
          * Excerpt, aka the post summary, stripped from original content, using the <code><!-- more --></code> separator
-         * @type {String}
+         * @type {string}
          * @public
+         * @copyright Tom Bazarnik and the contributors
+         * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
          */
 		this.excerpt = excerpt
 
@@ -102,8 +110,10 @@ export class ContentPost {
 
 		/**
          * Parsed post content, as HTML, using the provided content without the excerpt
-         * @type {String}
+         * @type {string}
          * @public
+         * @copyright Tom Bazarnik and the contributors
+         * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
          */
 		this.html = parser.parse(this.content)
 	}

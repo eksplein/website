@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ContentCrawler} from '../../lib/ContentCrawler'
+import {ContentCrawler} from '../../models/ContentCrawler'
 
 const posts = []
 const crawler = new ContentCrawler('posts/')
