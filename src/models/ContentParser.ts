@@ -76,7 +76,7 @@ import 'prism-svelte'
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
 */
-const DEFAULT_RENDERER: marked.Renderer = new marked.Renderer({})
+export const DEFAULT_RENDERER: marked.Renderer = new marked.Renderer({})
 const linkRenderer = DEFAULT_RENDERER.link
 
 DEFAULT_RENDERER.link = (href, title, text) => {
@@ -115,7 +115,6 @@ DEFAULT_RENDERER.paragraph = text => {
 /**
  * Content parser utility, which takes care of parsing Markdown as HTML, using a customizable Marked renderer.
  * @public
- * @constant
  * @class ContentParser
  * @property {marked.Renderer}  customRenderer
  * @copyright Tom Bazarnik and the contributors
@@ -138,7 +137,7 @@ export class ContentParser {
 
 	/**
      * Helper method that generates a blank Marked renderer
-     * @method
+     * @method generateMarkedRenderer
      * @return {marked.Renderer}
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
@@ -149,7 +148,7 @@ export class ContentParser {
 
 	/**
      * Helper method that generates a new Marked renderer, based on the <code>DEFAULT_RENDERER</code> one.
-     * @method
+     * @method generateDefaultRenderer
      * @return {DEFAULT_RENDERER}
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
@@ -160,7 +159,7 @@ export class ContentParser {
 
 	/**
      * Parse the content with the ContentParser object renderer
-     * @method
+     * @method parse
      * @param {string} content - the original Markdown content
      * @return {string}
      * @copyright Tom Bazarnik and the contributors

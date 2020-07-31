@@ -34,7 +34,6 @@ const EXCERPT_SEPARATOR: string = '<!-- more -->'
 /**
  * General-purpose content post utility,
  * @public
- * @constant
  * @class ContentPost
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>

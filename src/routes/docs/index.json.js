@@ -1,4 +1,5 @@
 /**
+ * @license GPL-3.0
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
  * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
@@ -17,31 +18,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const { build } = require('esbuild')
-const rimraf = require('rimraf')
+import {SourceCodeCrawler} from '../../models/SourceCodeCrawler'
 
-const { getAllTypeScriptFilesFrom } = require('./_common')
+const sourceCodeCrawler = new SourceCodeCrawler('src/')
 
-const fs = require('fs')
+export async function get(_request, response) {
+	response.writeHead(200, {
+		'Content-Type': 'application/json'
+    })
+    
+    const docs = await sourceCodeCrawler.crawl(['.ts', '.svelte'])
+    const contents = JSON.stringify(docs.map(file => file))
 
-const useEsbuild = async () => {
-    const typeScriptFiles = await getAllTypeScriptFilesFrom('src/models')
-    if (typeScriptFiles) {
-        rimraf('src/models/**/*.js', fs, (err) => {
-            if (err)
-                console.log(err)
-            else {
-                typeScriptFiles.forEach(el => {
-                    build({
-                        entryPoints: [`${el}`],
-                        outfile: `${el.replace(/.ts$/g, '.js')}`,
-                        minify: true,
-                        sourcemap: true
-                    }).catch(() => process.exit(1))
-                })
-            }
-        })
-    }
+	response.end(contents)
 }
-
-useEsbuild()

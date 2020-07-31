@@ -120,5 +120,5 @@ package-lock.json
 /src/node_modules/
 
 # TypeScript compiled models
-/src/models/*.js
-/src/models/*.js.map
+/src/models/**/*.js
+/src/models/**/*.js.map

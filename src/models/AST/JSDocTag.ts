@@ -17,26 +17,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import fs from 'fs-extra'
-import * as path from 'path'
-
-const cwd: string = process.cwd()
-
 /**
- * Emote crawler utility, which takes care of crawling emotes directory (<code>./emotes</code>)
- * @public
- * @class EmoteCrawler
- * @property {string}  emotesPath
+ * Low-level JSDoc tag type utility
+ * @private
+ * @class TagType
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
-export class EmoteCrawler {
-	public emotesPath: string
-	constructor(pathString = 'emotes/') {
-		this.emotesPath = pathString
-	}
+class JSDocTagType {
+    type: string
+    name?: string
+    expression?: JSDocTagType
+    applications?: JSDocTagType[]
+    description?: string
+    default?: string
+}
 
-	setEmotesPath(pathString: string) {
-		this.emotesPath = path.join(cwd, pathString)
+/**
+ * General-purpose source code file utility,
+ * @public
+ * @class JSDocTag
+ * @copyright Tom Bazarnik and the contributors
+ * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
+ */
+export class JSDocTag {
+    title: string
+    name: string
+    type?: JSDocTagType
+    language?: string
+    description?: string
+    inlineTags?: any[]
+
+    constructor(jsDocTagObject: Object) {
+		for (const [key, value] of Object.entries(jsDocTagObject))
+			this[key] = value
 	}
 }

@@ -19,7 +19,6 @@
     "test": "run-p --race dev cy:run",
     "excalidraw": "excalidraw-cli excalidraw ./__eksplein__/excalidraw -q",
     "license-compliance": "license-compliance --production --allow \"MIT;WTFPL;ISC;Apache-2.0;0BSD;BSD-3-Clause;BSD-2-Clause;GPL-2.0;GPL-2.0+;GPL-3.0;LGPL-2.0;LGPL-3.0;LGPL-3.0+;MPL-2.0\"",
-    "docma": "docma && docma serve",
     "lint": "xo src/**/* rollup.config.js",
     "xo": "xo !node_modules !src/node_modules !__sapper__ !__eksplein__ ./src/**/*.js --fix"
   },
@@ -33,7 +32,8 @@
     "prism-svelte": "^0.4.6",
     "prismjs": "^1.20.0",
     "reading-time": "^1.2.0",
-    "sirv": "^0.4.0"
+    "sirv": "^0.4.0",
+    "svelte-json-tree": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -47,16 +47,19 @@
     "@rollup/plugin-replace": "^2.3.3",
     "@tommywalkie/excalidraw-cli": "^0.5.0",
     "@types/marked": "^1.1.0",
+    "@typescript-eslint/types": "^3.7.1",
+    "@typescript-eslint/typescript-estree": "^3.7.1",
+    "astexplorer-syn": "^0.15.30",
     "chokidar-cli": "^2.1.0",
     "cpy-cli": "^3.1.1",
     "cypress": "^4.7.0",
     "cypress-jest-adapter": "^0.1.1",
-    "docma": "^3.2.2",
     "esbuild": "^0.6.8",
     "fs-extra": "^9.0.1",
     "jsdoc": "^3.6.5",
     "license-compliance": "^1.0.2",
     "npm-run-all": "^4.1.5",
+    "parse-comments": "^1.0.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.13.1",
     "rollup-plugin-esbuild": "^2.4.2",

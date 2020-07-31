@@ -29,7 +29,6 @@ const cwd: string = process.cwd()
 /**
  * Content crawler utility, which takes care of crawling directories for Markdown files and retrieves frontmatter data
  * @public
- * @constant
  * @class ContentCrawler
  * @property {string}  contentPath
  * @copyright Tom Bazarnik and the contributors
@@ -62,7 +61,7 @@ export class ContentCrawler {
 
 	/**
      * Set the content directory path from Path object.
-     * @method
+     * @method setContentPath
      * @param {string} pathString - To-be-crawled content directory path string
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
@@ -73,7 +72,7 @@ export class ContentCrawler {
 
 	/**
      * Get directories from content directory path.
-     * @method
+     * @method getDirectories
      * @return {Array.<string>} Directory names
      * @example
      * // posts/
@@ -98,7 +97,7 @@ export class ContentCrawler {
 
 	/**
      * Get Markdown posts from content subfolder.
-     * @method
+     * @method markdownPostsFromDirectory
      * @param {string} directory - Subfolder name
      * @return {Array.<string>} Posts inside the given subfolder
      * @example
@@ -120,7 +119,7 @@ export class ContentCrawler {
 
 	/**
      * Get posts and frontmatter data from content subfolder.
-     * @method
+     * @method postsFromDirectory
      * @param {ISO_639_1} directory - Subfolder name
      * @return {Array.<ContentPost>} Posts inside the given subfolder
      * @copyright Tom Bazarnik and the contributors

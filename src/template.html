@@ -29,7 +29,8 @@
 
 	<link rel='stylesheet' href='global.css'>
 	<link rel='stylesheet' href='fonts.css'>
-	<link rel='stylesheet' href='prism.css'>
+    <link rel='stylesheet' href='prism.css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.9/dist/shoelace/shoelace.css">
 	<link rel='manifest' href='manifest.json'>
 	<link rel='icon' type='image/png' href='favicon.png'>
 
@@ -50,6 +51,8 @@
 	<!-- Sapper creates a <script> tag containing `app/client.js`
 	     and anything else it needs to hydrate the app and
 	     initialise the router -->
-	%sapper.scripts%
+    %sapper.scripts%
+    
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.9/dist/shoelace/shoelace.esm.js"></script>
 </body>
 </html>
