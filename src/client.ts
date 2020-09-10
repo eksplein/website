@@ -17,26 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import posts from '../_posts'
+/* eslint-env browser */
 
-export function get(request, response) {
-	response.writeHead(200, {
-		'Content-Type': 'application/json'
-	})
+import * as sapper from '@sapper/app'
 
-	const {lang} = request.params
-
-	const langPosts = posts.filter(element => element.lang === lang)
-
-	const contents = JSON.stringify(langPosts.map(post => {
-		return {
-			title: post.title,
-			slug: post.slug,
-			excerpt: post.excerpt,
-			printDate: post.printDate,
-			lang: post.lang
-		}
-	}))
-
-	response.end(contents)
-}
+sapper.start({
+	target: document.querySelector('#sapper')
+})

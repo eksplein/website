@@ -19,10 +19,10 @@
 
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import * as matter from 'gray-matter'
+const matter = require('gray-matter')
 
 import {ContentPost} from './ContentPost'
-import {ISO_639_1} from './TranslationEntry'
+import type {ISO_639_1} from './TranslationEntry'
 
 const cwd: string = process.cwd()
 
@@ -50,7 +50,7 @@ export class ContentCrawler {
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	constructor(pathString: string = 'posts/') {
+	constructor(pathString = 'posts/') {
 		/**
          * To-be-crawled content directory path
          * @type {string}

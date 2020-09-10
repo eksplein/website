@@ -1,128 +1,98 @@
-/**
- * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
- * in which things are explained
- * Copyright (C) 2020  Tom Bazarnik and the contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
 import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
-import config from 'sapper/config/rollup'
-import marked from 'marked'
-import svg from 'rollup-plugin-svg-import'
-import pkg from './package.json'
 import esbuild from 'rollup-plugin-esbuild'
+import config from 'sapper/config/rollup'
 import sveltePreprocess from 'svelte-preprocess'
+import pkg from './package.json'
 
-const preprocess = sveltePreprocess({
-	typescript: true,
-	scss: true
-})
+const defaults = { script: 'typescript' }
+const preprocess = [sveltePreprocess({ defaults })]
+const mode = process.env.NODE_ENV
+const dev = mode === 'development'
+const sourcemap = dev ? 'inline' : false
+const sapperVersion = pkg.devDependencies.sapper.match(/[0-9]{1,5}/g).map(el => Number(el))
 
-const optimizer = () => esbuild({
-    minify: !dev,
-    target: "es2017",
+const optimizer = server => esbuild({
+    include: /\.[jt]sx?$/,
+    minify: server ? (sapperVersion[1] >= 28 && sapperVersion[2] > 0) ? false : true : true,
+    target: 'es2017',
     loaders: {
         '.json': 'json'
     }
 })
 
-const mode = process.env.NODE_ENV
-const dev = mode === 'development'
+const warningIsIgnored = (warning) => 
+    warning.message.includes('Use of eval is strongly discouraged, as it poses security risks and may cause issues with minification',)
+    || warning.message.includes('Circular dependency: node_modules')
+    || warning.message.includes(`The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten`)
+    || warning.message.includes(`'preload' is not exported by`)
 
-const onwarn = () => (warning, onwarn) => {
-	if (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message))
-		return true
-	if (warning.message === 'Unused CSS selector')
-		return true
-	return onwarn(warning)
-}
+// Workaround for https://github.lcom/sveltejs/sapper/issues/1266
+const onwarn = (warning, _onwarn) => (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) || warningIsIgnored(warning) || console.warn(warning.toString())
 
-const markdown = () => ({
-	transform(md, id) {
-		if (!/\.md$/.test(id)) return null
-		const data = marked(md)
-		return {
-			code: `export default ${JSON.stringify(data.toString())};`,
-			map: {mappings: ''}
-		}
-	}
-})
+export default {
+	client: {
+        input: config.client.input().replace(/\.js$/, '.ts'),
+		output: config.client.output(),
+		plugins: [
+			replace({
+				"process.browser": true,
+				"process.env.NODE_ENV": JSON.stringify(mode),
+			}),
+			svelte({
+                preprocess,
+				dev,
+				hydratable: true,
+				emitCss: true,
+			}),
+			resolve(),
+            commonjs(),
+            optimizer()
+		],
 
-const client = {
-	input: config.client.input(),
-	output: config.client.output(),
-	plugins: [
-		replace({
-			'process.browser': true,
-			'process.env.NODE_ENV': JSON.stringify(mode)
-		}),
-		svg({stringify: true}),
-		svelte({
-			dev,
-			preprocess,
-			hydratable: true,
-			emitCss: true
-		}),
-		resolve(),
-		commonjs(),
-		!dev && optimizer()
-	],
-	preserveEntrySignatures: false,
-	onwarn
-}
+		preserveEntrySignatures: false,
+		onwarn,
+	},
 
-const server = {
-	input: config.server.input(),
-	output: config.server.output(),
-	plugins: [
-		replace({
-			'process.browser': false,
-			'process.env.NODE_ENV': JSON.stringify(mode)
-		}),
-		svg({stringify: true}),
-		svelte({
-			preprocess,
-			generate: 'ssr',
-			dev
-		}),
-		resolve(),
-		commonjs(),
-		markdown(),
-	],
-	external: Object.keys(pkg.dependencies).concat(
-		require('module').builtinModules || Object.keys(process.binding('natives'))
-	),
-	onwarn
-}
+	server: {
+        input: {
+            server: config.server.input().server.replace(/\.js$/, '.ts')
+        },
+		output: { ...config.server.output(), sourcemap },
+		plugins: [
+			replace({
+				"process.browser": false,
+				"process.env.NODE_ENV": JSON.stringify(mode),
+			}),
+			svelte({
+                preprocess,
+				generate: "ssr",
+				dev,
+			}),
+			resolve(),
+            commonjs(),
+            optimizer(true)
+		],
+		external: Object.keys(pkg.dependencies).concat(
+			require("module").builtinModules || Object.keys(process.binding("natives")), // eslint-disable-line global-require
+		),
+		onwarn,
+	},
 
-const serviceworker = {
-	input: config.serviceworker.input(),
-	output: config.serviceworker.output(),
-	plugins: [
-		resolve(),
-		replace({
-			'process.browser': true,
-			'process.env.NODE_ENV': JSON.stringify(mode)
-		}),
-		commonjs(),
-		!dev && optimizer()
-	],
-	onwarn
-}
-
-export {client, server, serviceworker}
+	serviceworker: {
+		input: config.serviceworker.input().replace(/\.js$/, '.ts'),
+        output: config.serviceworker.output(),
+		plugins: [
+			resolve(),
+			replace({
+				"process.browser": true,
+				"process.env.NODE_ENV": JSON.stringify(mode),
+			}),
+            commonjs(),
+            optimizer()
+		],
+		onwarn,
+	},
+};

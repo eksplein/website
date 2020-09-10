@@ -19,29 +19,24 @@
 
 import posts from '../_posts'
 
-export function get(request, response, _) {
-	// The `slug` parameter is available because
-	// this file is called [slug].json.js
-	const {lang, slug} = request.params
-
-	const lookup = new Map()
-	posts.forEach(post => {
-		if (post.lang === lang) lookup.set(post.slug, JSON.stringify(post))
+export function get(request: any, response: any) {
+	response.writeHead(200, {
+		'Content-Type': 'application/json'
 	})
 
-	if (lookup.has(slug)) {
-		response.writeHead(200, {
-			'Content-Type': 'application/json'
-		})
+	const {lang} = request.params
 
-		response.end(lookup.get(slug))
-	} else {
-		response.writeHead(404, {
-			'Content-Type': 'application/json'
-		})
+	const langPosts = posts.filter((element: any) => element.lang === lang)
 
-		response.end(JSON.stringify({
-			message: 'Not found'
-		}))
-	}
+	const contents = JSON.stringify(langPosts.map((post: any) => {
+		return {
+			title: post.title,
+			slug: post.slug,
+			excerpt: post.excerpt,
+			printDate: post.printDate,
+			lang: post.lang
+		}
+	}))
+
+	response.end(contents)
 }

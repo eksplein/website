@@ -18,10 +18,10 @@
  */
 
 import {format} from 'date-fns'
-import * as readingTime from 'reading-time'
-
 import {ContentParser} from './ContentParser'
-import {ISO_639_1} from './TranslationEntry'
+import type {ISO_639_1} from './TranslationEntry'
+
+const readingTime = require('reading-time')
 
 /**
  * Default excerpt separator, this allows to separate summary and content from a Markdown file
@@ -29,7 +29,7 @@ import {ISO_639_1} from './TranslationEntry'
  * @type {string}
  * @default <!-- more -->
 */
-const EXCERPT_SEPARATOR: string = '<!-- more -->'
+const EXCERPT_SEPARATOR = '<!-- more -->'
 
 /**
  * General-purpose content post utility,
@@ -39,9 +39,9 @@ const EXCERPT_SEPARATOR: string = '<!-- more -->'
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
 export class ContentPost {
-	title: string
+	title: string | undefined
 	slug?: string
-	html?: string
+	html: string
 	date: string
 	printDate?: string
 	printReadingTime?: string
@@ -59,7 +59,7 @@ export class ContentPost {
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	constructor(postObject: ContentPost) {
+	constructor(postObject: Record<string, unknown>) {
 		this.html = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at eleifend risus. Vestibulum porta elit ipsum, nec congue erat lacinia nec. Proin sagittis orci id mattis mollis. Donec sollicitudin turpis sit amet condimentum lacinia. Proin volutpat, ligula nec ornare facilisis, libero ex porttitor odio, non luctus urna augue nec turpis. Donec erat tellus, suscipit quis mi eu, scelerisque faucibus mi. In hac habitasse platea dictumst. Cras elementum accumsan urna in semper. Suspendisse accumsan aliquet nisl tincidunt vehicula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut convallis dolor at orci iaculis cursus. Nam ut facilisis enim. Vestibulum non euismod elit. Vivamus molestie congue sem, a aliquam justo ornare id.</p>
             <p>Sed commodo leo consectetur luctus ultrices. Duis vulputate lectus ut auctor convallis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi blandit massa et tincidunt lobortis. Etiam sed venenatis nulla. Sed vulputate nulla vel sodales accumsan. Donec sem purus, venenatis non pretium at, sollicitudin non augue. Nunc egestas massa accumsan tortor tristique, eu mollis arcu ornare. Mauris lacinia porta augue, quis ullamcorper justo molestie et. Praesent commodo porta nunc sit amet ornare.</p>
             <p>Curabitur eget est placerat, vehicula ante id, dignissim libero. Vivamus a massa facilisis, viverra mauris vel, congue nisi. Maecenas dignissim pretium metus sit amet viverra. Morbi rhoncus lacus odio, in pulvinar magna sodales a. Maecenas semper suscipit quam. Donec molestie fermentum auctor. Sed rutrum felis orci, eget ultrices neque vehicula quis. Nam non augue gravida, luctus metus non, blandit enim. Maecenas scelerisque, neque sed ultrices scelerisque, enim nisl posuere libero, sit amet dignissim nunc diam non leo. Integer varius velit et sem laoreet bibendum. Sed aliquam blandit justo, eu dictum urna. In et faucibus magna, id rhoncus nisi. Maecenas ullamcorper eleifend pellentesque. Duis fermentum sapien sit amet ullamcorper posuere. Ut ut nibh ipsum.</p>
@@ -67,7 +67,7 @@ export class ContentPost {
             <p>Integer et orci sit amet sapien suscipit tincidunt eu id ligula. Donec sit amet neque quis turpis imperdiet faucibus. Vestibulum consectetur turpis nisi, at porttitor velit ullamcorper eu. Nam a tortor ligula. Vestibulum molestie, dolor at mattis rutrum, arcu purus pharetra ipsum, at tincidunt sem sem eu dolor. Nunc tincidunt risus elit. Etiam et nisl nisl. Aliquam erat volutpat. Aenean malesuada euismod vestibulum. Fusce pretium nisl id ex luctus rhoncus. Nam egestas nisi a ante malesuada, condimentum tristique mi placerat. Suspendisse eu libero at eros tincidunt viverra a vitae odio. Donec tellus eros, pretium eu ex a, tempor posuere tellus. Nulla ut eros in felis tincidunt sodales in ac elit. Phasellus sed egestas elit. Proin pellentesque faucibus lorem, non condimentum arcu consequat id.</p>`
 		this.date = new Date().toDateString()
 		for (const [key, value] of Object.entries(postObject))
-			this[key] = value
+			(this as any)[key] = value
 		/**
          * Human-readable content post publish date, parsed via <code>date-fns</code>
          * @type {string}

@@ -1,0 +1,17 @@
+{
+    "extends": "@tsconfig/svelte/tsconfig.json",
+    "include": ["src/**/*"],
+    "exclude": [
+        "node_modules/**/*",
+        "__sapper__/**/*",
+        "public/**/*"
+    ],
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "lib": ["DOM", "WebWorker"],
+        "types": ["svelte", "node", "sapper/runtime"],
+        "typeRoots": [ "./node_modules/@types" ]
+    }
+}

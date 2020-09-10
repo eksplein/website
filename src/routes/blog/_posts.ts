@@ -1,5 +1,4 @@
 /**
- * @license GPL-3.0
  * EKSPLEIN (/ɛkˈspleɪn/) is a simple and stupid glossary-like blog
  * in which things are explained
  * Copyright (C) 2020  Tom Bazarnik and the contributors
@@ -18,17 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SourceCodeCrawler} from '../../models/SourceCodeCrawler'
+import {ContentCrawler} from '../../models/ContentCrawler'
 
-const sourceCodeCrawler = new SourceCodeCrawler('src/')
+const posts: any = []
+const crawler = new ContentCrawler('posts/')
+const directories = crawler.getDirectories()
 
-export async function get(_request, response) {
-	response.writeHead(200, {
-		'Content-Type': 'application/json'
-    })
-    
-    const docs = await sourceCodeCrawler.crawl(['.ts', '.svelte'])
-    const contents = JSON.stringify(docs.map(file => file))
+directories.forEach((dir: any) => {
+	const langPosts = crawler.postsFromDirectory(dir)
+	langPosts.forEach((post: any) => {
+		posts.push(post)
+	})
+})
 
-	response.end(contents)
-}
+export default posts

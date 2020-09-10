@@ -42,6 +42,6 @@ export class Emote {
      */
 	constructor(emoteObject: Record<string, any>) {
 		for (const [key, value] of Object.entries(emoteObject))
-			this[key] = value
+			(this as any)[key] = value
 	}
 }

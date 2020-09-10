@@ -41,8 +41,9 @@ export class TranslatableLabel {
      */
 	constructor(labelObject: Record<string, unknown>) {
 		this.translations = []
+		this.defaultText = ''
 		for (const [key, value] of Object.entries(labelObject))
-			this[key] = value
+			(this as any)[key] = value
 	}
 
 	/**
@@ -68,6 +69,7 @@ export class TranslatableLabel {
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	in(language: ISO_639_1): string {
-		return this.translations.find(element => element.language === language).entry
+		const foundLanguage = this.translations.find(element => element.language === language)
+		return foundLanguage ? foundLanguage.entry : this.defaultText
 	}
 }

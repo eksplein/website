@@ -21,7 +21,7 @@
   import Logo from './Logo.svelte'
   import Nav from './Nav.svelte'
 
-  export let segment
+  export let segment: any
 </script>
 
 <style>

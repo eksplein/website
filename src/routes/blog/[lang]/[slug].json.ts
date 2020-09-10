@@ -17,17 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ContentCrawler} from '../../models/ContentCrawler'
+import posts from '../_posts'
 
-const posts = []
-const crawler = new ContentCrawler('posts/')
-const directories = crawler.getDirectories()
+export function get(request: any, response: any) {
+	// The `slug` parameter is available because
+	// this file is called [slug].json.js
+	const {lang, slug} = request.params
 
-directories.forEach(dir => {
-	const langPosts = crawler.postsFromDirectory(dir)
-	langPosts.forEach(post => {
-		posts.push(post)
+	const lookup = new Map()
+	posts.forEach((post: any) => {
+		if (post.lang === lang) lookup.set(post.slug, JSON.stringify(post))
 	})
-})
 
-export default posts
+	if (lookup.has(slug)) {
+		response.writeHead(200, {
+			'Content-Type': 'application/json'
+		})
+
+		response.end(lookup.get(slug))
+	} else {
+		response.writeHead(404, {
+			'Content-Type': 'application/json'
+		})
+
+		response.end(JSON.stringify({
+			message: 'Not found'
+		}))
+	}
+}

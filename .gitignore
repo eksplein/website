@@ -113,12 +113,8 @@ dist
 *.lock
 package-lock.json
 
-# Eksplein non-static assets (Excalidraw, emotes, CSS, etc.)
-/__eksplein__/
-
 # Sapper node_modules in src/
 /src/node_modules/
 
-# TypeScript compiled models
-/src/models/**/*.js
-/src/models/**/*.js.map
+# Typedoc outputs
+/docs
