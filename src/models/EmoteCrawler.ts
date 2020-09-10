@@ -25,13 +25,12 @@ const cwd: string = process.cwd()
 /**
  * Emote crawler utility, which takes care of crawling emotes directory (<code>./emotes</code>)
  * @public
- * @constant
  * @class EmoteCrawler
  * @property {string}  emotesPath
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
-export const EmoteCrawler = class EmoteCrawler {
+export class EmoteCrawler {
 	public emotesPath: string
 	constructor(pathString = 'emotes/') {
 		this.emotesPath = pathString

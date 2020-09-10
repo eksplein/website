@@ -17,30 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const { build } = require('esbuild')
-const rimraf = require('rimraf')
+import * as sapper from '@sapper/server'
+import compression from 'compression'
+import polka from 'polka'
+import sirv from 'sirv'
 
-const { getAllTypeScriptFilesFrom } = require('./_common')
+const PORT = process.env.PORT
+const mode = process.env.NODE_ENV
+const dev: boolean = mode === 'development'
 
-const fs = require('fs')
+const app = polka()
 
-const useEsbuild = async () => {
-    const typeScriptFiles = await getAllTypeScriptFilesFrom('src/models')
-
-    await rimraf('src/models/**/*.js', fs, (err) => {
-        if (err)
-            console.log(err)
-        else {
-            typeScriptFiles.forEach(el => {
-                build({
-                    entryPoints: [`${el}`],
-                    outfile: `${el.replace(/.ts$/g, '.js')}`,
-                    minify: true,
-                    sourcemap: true
-                }).catch(() => process.exit(1))
-            })
-        }
-    })
-}
-
-useEsbuild()
+app.use(
+	compression({threshold: 0}),
+	sirv('static', {dev}),
+	sapper.middleware()
+).listen(PORT, (err: any) => {
+	if (err) console.log('error', err)
+})

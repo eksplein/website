@@ -18,7 +18,7 @@
 -->
 
 <script>
-  export let segment;
+  export let segment: any;
 </script>
 
 <style>

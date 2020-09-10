@@ -20,7 +20,7 @@
 /**
  * Enum for <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO_639-1</a> language codes.
  * @readonly
- * @enum {string}
+ * @enum {string} ISO_639_1
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
@@ -52,7 +52,6 @@ export enum ISO_639_1 {
 /**
  * Low-level translation entry utility,
  * @public
- * @constant
  * @class TranslationEntry
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>

@@ -22,7 +22,6 @@ import {TranslationEntry, ISO_639_1} from './TranslationEntry'
 /**
  * General-purpose translatable UI label utility,
  * @public
- * @constant
  * @class TranslatableLabel
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
@@ -42,13 +41,14 @@ export class TranslatableLabel {
      */
 	constructor(labelObject: Record<string, unknown>) {
 		this.translations = []
+		this.defaultText = ''
 		for (const [key, value] of Object.entries(labelObject))
-			this[key] = value
+			(this as any)[key] = value
 	}
 
 	/**
      * Push new translation for a label
-     * @method
+     * @method addTranslation
      * @param {TranslationEntry} translationObject - the translation entry
      * @param {ISO_639_1} translationObject.language - <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO_639-1</a> Language code
      * @param {string} translationObject.entry - the translation entry
@@ -62,13 +62,14 @@ export class TranslatableLabel {
 
 	/**
      * Push new translation for a label
-     * @method
+     * @method in
      * @param {ISO_639_1} language - <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO_639-1</a> Language code
      * @return {string} translated - Translated label, falls back to <code>defaultText</code> if none found
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
 	in(language: ISO_639_1): string {
-		return this.translations.find(element => element.language === language).entry
+		const foundLanguage = this.translations.find(element => element.language === language)
+		return foundLanguage ? foundLanguage.entry : this.defaultText
 	}
 }

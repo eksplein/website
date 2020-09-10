@@ -20,7 +20,7 @@
 
 import posts from './_posts'
 
-const contents = JSON.stringify(posts.map(post => {
+const contents = JSON.stringify(posts.map((post: any) => {
 	return {
 		title: post.title,
 		slug: post.slug,
@@ -30,7 +30,7 @@ const contents = JSON.stringify(posts.map(post => {
 	}
 }))
 
-export function get(request, response) {
+export function get(_request: any, response: any) {
 	response.writeHead(200, {
 		'Content-Type': 'application/json'
 	})

@@ -20,7 +20,6 @@
 /**
  * General-purpose emote utility,
  * @public
- * @constant
  * @class Emote
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
@@ -43,6 +42,6 @@ export class Emote {
      */
 	constructor(emoteObject: Record<string, any>) {
 		for (const [key, value] of Object.entries(emoteObject))
-			this[key] = value
+			(this as any)[key] = value
 	}
 }

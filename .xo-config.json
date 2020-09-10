@@ -2,14 +2,23 @@
     "semicolon": false,
     "rules": {
         "curly": "off",
-        "unicorn/filename-case": "off"
+        "unicorn/filename-case": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-extraneous-class": "off",
+        "@typescript-eslint/restrict-template-expressions": "off"
     },
     "overrides": [
         {
-            "files": [ "src/models/ContentParser.js" ],
+            "files": [ "src/models/ContentParser.ts" ],
             "rules": {
                 "import/extensions": "off",
                 "import/no-unassigned-import": "off"
+            }
+        },
+        {
+            "files": [ "src/service-worker.ts" ],
+            "rules": {
+                "@typescript-eslint/no-floating-promises": "off"
             }
         }
     ]

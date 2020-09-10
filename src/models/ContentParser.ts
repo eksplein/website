@@ -18,7 +18,8 @@
  */
 
 import * as prism from 'prismjs'
-import * as marked from 'marked'
+import type {Renderer} from 'marked'
+const marked = require('marked')
 
 // Independant Prism components
 import 'prismjs/components/prism-gdscript.min'
@@ -76,30 +77,30 @@ import 'prism-svelte'
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
 */
-const DEFAULT_RENDERER: marked.Renderer = new marked.Renderer({})
+export const DEFAULT_RENDERER: Renderer = new marked.Renderer({})
 const linkRenderer = DEFAULT_RENDERER.link
 
 DEFAULT_RENDERER.link = (href, title, text) => {
 	const html = linkRenderer.call(DEFAULT_RENDERER, href, title, text)
 
-	if (href.indexOf('/') === 0) {
+	if ((href as any).indexOf('/') === 0) {
 		// Do not open internal links on new tab
 		return html
 	}
 
-	if (href.indexOf('#') === 0) {
+	if ((href as any).indexOf('#') === 0) {
 		// Handle hash links to internal elements
 		/* eslint-disable-next-line no-script-url */
 		const html = linkRenderer.call(DEFAULT_RENDERER, 'javascript:;', title, text)
-		return html.replace(/^<a /, `<a onclick="document.location.hash='${href.slice(1)}';" `)
+		return html.replace(/^<a /, `<a onclick="document.location.hash='${(href as any).slice(1)}';" `)
 	}
 
 	return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
 }
 
 DEFAULT_RENDERER.code = (code, language) => {
-	const parser = prism.languages[language] || prism.languages.html
-	const highlighted = prism.highlight(code, parser, language)
+	const parser = prism.languages[language ?? 'markup'] || prism.languages.html
+	const highlighted = prism.highlight(code, parser, language ?? 'markup')
 	return `<pre class="language-${language}"><code class="language-${language}">${highlighted}</code></pre>`
 }
 
@@ -115,14 +116,13 @@ DEFAULT_RENDERER.paragraph = text => {
 /**
  * Content parser utility, which takes care of parsing Markdown as HTML, using a customizable Marked renderer.
  * @public
- * @constant
  * @class ContentParser
  * @property {marked.Renderer}  customRenderer
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */
 export class ContentParser {
-	renderer: marked.Renderer
+	renderer: Renderer
 	/**
      * Creates an instance of ContentParser.
      * @param {marked.Renderer} [renderer=DEFAULT_RENDERER] - Marked renderer object that will parse the content. Defaults to DEFAULT_RENDERER constant if none provided.
@@ -130,7 +130,7 @@ export class ContentParser {
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	constructor(renderer?: marked.Renderer) {
+	constructor(renderer?: Renderer) {
 		this.renderer = DEFAULT_RENDERER
 		if (renderer)
 			this.renderer = renderer
@@ -138,18 +138,18 @@ export class ContentParser {
 
 	/**
      * Helper method that generates a blank Marked renderer
-     * @method
+     * @method generateMarkedRenderer
      * @return {marked.Renderer}
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	generateMarkedRenderer(): marked.Renderer {
+	generateMarkedRenderer(): Renderer {
 		return new marked.Renderer({})
 	}
 
 	/**
      * Helper method that generates a new Marked renderer, based on the <code>DEFAULT_RENDERER</code> one.
-     * @method
+     * @method generateDefaultRenderer
      * @return {DEFAULT_RENDERER}
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
@@ -160,13 +160,13 @@ export class ContentParser {
 
 	/**
      * Parse the content with the ContentParser object renderer
-     * @method
+     * @method parse
      * @param {string} content - the original Markdown content
      * @return {string}
      * @copyright Tom Bazarnik and the contributors
      * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
      */
-	parse(content) {
+	parse(content: any) {
 		marked.setOptions({renderer: this.renderer})
 		return marked(content)
 	}
