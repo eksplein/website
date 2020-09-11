@@ -1,21 +1,21 @@
-import { JSDOM } from 'jsdom';
-import { tick } from 'svelte';
+/** Eslint-env browser */
+import {JSDOM} from 'jsdom'
+import {tick} from 'svelte'
 
-const { window } = new JSDOM('');
+const {window} = new JSDOM('')
 
 export function setup() {
-	// @ts-ignore
-	global.window = window;
-	global.document = window.document;
-	global.navigator = window.navigator;
-	global.getComputedStyle = window.getComputedStyle;
-	global.requestAnimationFrame = null;
+	global.window = window
+	global.document = window.document
+	global.navigator = window.navigator
+	global.getComputedStyle = window.getComputedStyle
+	global.requestAnimationFrame = null
 }
 
 export function reset() {
-	window.document.title = '';
-	window.document.head.innerHTML = '';
-	window.document.body.innerHTML = '';
+	window.document.title = ''
+	window.document.head.innerHTML = ''
+	window.document.body.innerHTML = ''
 }
 
 /**
@@ -28,10 +28,10 @@ export function reset() {
  * @return {RenderOutput}
  */
 export function render(Tag, props = {}) {
-	Tag = Tag.default || Tag;
-	const container = window.document.body;
-	const component = new Tag({ props, target: container  });
-	return { container, component };
+	Tag = Tag.default || Tag
+	const container = window.document.body
+	const component = new Tag({props, target: container})
+	return {container, component}
 }
 
 /**
@@ -40,8 +40,8 @@ export function render(Tag, props = {}) {
  * @param {any} [details]
  * @returns Promise<void>
  */
-export function fire(elem, event, details) {
-	let evt = new window.Event(event, details);
-	elem.dispatchEvent(evt);
-	return tick();
+export function fire(element, event, details) {
+	const evt = new window.Event(event, details)
+	element.dispatchEvent(evt)
+	return tick()
 }
