@@ -28,10 +28,6 @@
   }
   .home-copy {
     flex: 1;
-
-    h1 {
-        text-align: center;
-    }
   }
   @media (max-width: 800px) {
     .home-container {
@@ -46,6 +42,7 @@
 </style>
 
 <script>
+    import { titleStyles } from '../components/styles'
     export let name: string = 'Eksplein.me'
 </script>
 
@@ -55,6 +52,6 @@
 
 <div class="home-container">
   <div class="home-copy">
-    <h1>Welcome to {name}</h1>
+    <h1 class={titleStyles}>Welcome to {name}</h1>
   </div>
 </div>

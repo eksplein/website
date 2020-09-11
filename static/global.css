@@ -284,21 +284,3 @@ ins {
     margin: 1em 0;
   }
 }
-
-.json-debugger div,
-.json-debugger p,
-.json-debugger ul,
-.json-debugger ol,
-.json-debugger li,
-.json-debugger span {
-    font-size: 14px;
-    line-height: 15px;
-}
-
-.json-debugger li {
-    margin: 4px;
-}
-
-.json-debugger {
-    margin-bottom: 15px;
-}
