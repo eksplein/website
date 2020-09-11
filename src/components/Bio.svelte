@@ -17,10 +17,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<style>
+<style lang="scss">
   div {
     align-items: center;
     display: flex;
+
+    p {
+      font-size: 1.125rem;
+    }
   }
   img {
     width: 100px;
@@ -29,9 +33,6 @@
     display: block;
     margin-right: 20px;
     max-width: inherit;
-  }
-  p {
-    font-size: 1.125rem;
   }
 </style>
 
