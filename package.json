@@ -13,10 +13,11 @@
         "watch": "chokidar \"src/**/*.ts\" --silent -c \"run-p -c -s type-check lint:dev\"",
         "type-check": "tsc --noEmit -p ./tsconfig.json",
         "license-compliance": "license-compliance --production --allow \"MIT;ISC;Apache-2.0;0BSD;BSD-3-Clause;BSD-2-Clause;GPL-2.0;GPL-2.0+;GPL-3.0;LGPL-2.0;LGPL-3.0;LGPL-3.0+;MPL-2.0\"",
-        "lint": "xo !node_modules !src/node_modules !__sapper__ ./src/**/*.ts --fix",
-        "lint:dev": "xo !node_modules !src/node_modules !__sapper__ ./src/**/*.ts || true",
+        "lint": "xo !node_modules !src/node_modules !__sapper__ \"./(src|tests)/**/*.ts\" --fix",
+        "lint:dev": "xo !node_modules !src/node_modules !__sapper__ \"./(src|tests)/**/*.ts\" || true",
         "doc": "npm run doc:build && serve -p 9191 docs",
-        "doc:build": "typedoc --out docs --exclude ./src/routes/**/* --mode file --includeDeclarations --excludeExternals src"
+        "doc:build": "typedoc --out docs --exclude ./src/routes/**/* --mode file --includeDeclarations --excludeExternals src",
+        "test": "uvu -r ts-node/register tests -r esm -r tests/setup/register -i setup"
     },
     "dependencies": {
         "compression": "^1.7.1",
@@ -38,6 +39,7 @@
         "@tsconfig/svelte": "^1.0.10",
         "@types/compression": "^1.7.0",
         "@types/fs-extra": "^9.0.1",
+        "@types/jsdom": "^16.2.4",
         "@types/marked": "^1.1.0",
         "@types/node": "^14.10.0",
         "@types/polka": "^0.5.1",
@@ -47,6 +49,8 @@
         "cash-true": "^0.0.2",
         "chokidar-cli": "^2.1.0",
         "esbuild": "^0.6.34",
+        "esm": "^3.2.25",
+        "jsdom": "^16.4.0",
         "license-compliance": "^1.0.2",
         "npm-run-all": "^4.1.5",
         "rollup": "^2.13.1",
@@ -58,8 +62,10 @@
         "serve": "^11.3.2",
         "svelte": "^3.24.1",
         "svelte-preprocess": "^4.2.1",
+        "ts-node": "^9.0.0",
         "typedoc": "^0.19.1",
         "typescript": "^3.9.7",
+        "uvu": "^0.3.3",
         "xo": "^0.32.1"
     }
 }
