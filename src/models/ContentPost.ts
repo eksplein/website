@@ -27,7 +27,7 @@ const readingTime = require('reading-time')
  * Default excerpt separator, this allows to separate summary and content from a Markdown file
  * @constant EXCERPT_SEPARATOR
  * @type {string}
- * @default <!-- more -->
+ * @default `<!-- more -->`
 */
 const EXCERPT_SEPARATOR = '<!-- more -->'
 
