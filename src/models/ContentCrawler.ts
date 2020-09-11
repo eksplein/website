@@ -30,7 +30,6 @@ const cwd: string = process.cwd()
  * Content crawler utility, which takes care of crawling directories for Markdown files and retrieves frontmatter data
  * @public
  * @class ContentCrawler
- * @property {string}  contentPath
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */

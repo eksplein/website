@@ -16,7 +16,7 @@
         "lint": "xo !node_modules !src/node_modules !__sapper__ ./src/**/*.ts --fix",
         "lint:dev": "xo !node_modules !src/node_modules !__sapper__ ./src/**/*.ts || true",
         "doc": "npm run doc:build && serve -p 9191 docs",
-        "doc:build": "typedoc --out docs src"
+        "doc:build": "typedoc --out docs --exclude ./src/routes/**/* --mode file --includeDeclarations --excludeExternals src"
     },
     "dependencies": {
         "compression": "^1.7.1",

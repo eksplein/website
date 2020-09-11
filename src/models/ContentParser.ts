@@ -117,7 +117,6 @@ DEFAULT_RENDERER.paragraph = text => {
  * Content parser utility, which takes care of parsing Markdown as HTML, using a customizable Marked renderer.
  * @public
  * @class ContentParser
- * @property {marked.Renderer}  customRenderer
  * @copyright Tom Bazarnik and the contributors
  * @license <a href="http://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License v3.0</a>
  */

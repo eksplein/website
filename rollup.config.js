@@ -12,11 +12,10 @@ const preprocess = [sveltePreprocess({ defaults })]
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 const sourcemap = dev ? 'inline' : false
-const sapperVersion = pkg.devDependencies.sapper.match(/[0-9]{1,5}/g).map(el => Number(el))
 
 const optimizer = server => esbuild({
     include: /\.[jt]sx?$/,
-    minify: server ? (sapperVersion[1] >= 28 && sapperVersion[2] > 0) ? false : true : true,
+    minify: server ? false : true,
     target: 'es2017',
     loaders: {
         '.json': 'json'
