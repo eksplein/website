@@ -10,7 +10,7 @@ The hereby section is an exhaustive list of principles that any contributor shal
 
 - The client shall be **fast** and **lightweight**.
 
-> Good web developers care about UX. Whenever possible, avoid using heavy runtime-based frameworks/libraries for simple tasks that can be done with Svelte and CSS.
+> Good web developers care about UX. Whenever possible, avoid using heavy runtime-based frameworks/libraries for simple tasks that can be done with Svelte and CSS. For any heavy task, take advantage of SSR features.
 
 - The client shall be **testable**. 
 
@@ -19,10 +19,6 @@ The hereby section is an exhaustive list of principles that any contributor shal
 - The client shall have **good DX**. 
 
 > No contributor enjoys working on projects with slow compile/re-rendering times, nonsense state management tools or undocumented codebase.
-
-- Use **SSR** for any heavy task.
-
-> Please take advantage of Sapper SSR features. Frameworks like Sapper, Next or Nuxt exist for this exact purpose.
 
 - Components shall be easily **reused**.
 
