@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<style lang="scss">
+<style>
   .home-container {
     align-items: center;
     display: flex;
@@ -42,7 +42,7 @@
 </style>
 
 <script>
-    import { titleStyles } from '../components/styles'
+    import { titleStyles } from '../components/_styles'
     export let name: string = 'Eksplein.me'
 </script>
 

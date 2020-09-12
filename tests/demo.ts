@@ -1,6 +1,8 @@
 import {suite} from 'uvu'
 import * as assert from 'uvu/assert'
 import {ContentCrawler} from '../src/models/ContentCrawler'
+
+// @ts-ignore
 import Bio from '../src/components/Bio.svelte'
 
 const sampleTypeScriptTestSuite = suite('ContentCrawler')
