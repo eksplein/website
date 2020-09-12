@@ -10,7 +10,7 @@ The hereby section is an exhaustive list of principles that any contributor shal
 
 - The client shall be **fast** and **lightweight**.
 
-> Good web developers care about UX. Whenever possible, avoid using heavy runtime-based frameworks/libraries for simple tasks that can be done with Svelte and CSS. For any heavy task, take advantage of SSR features.
+> Good web developers care about UX. Whenever possible, avoid using heavy runtime-based frameworks/libraries for simple tasks that can be done with Svelte and CSS. For any heavy asset / data computing task, take advantage of SSR features.
 
 - The client shall be **testable**. 
 
